@@ -35,12 +35,23 @@ python3 -m http.server 8000   # затем открыть http://localhost:8000
 Railway, проект `lotsman-site`: сервис собирается из `Dockerfile` этого репозитория. Порт берётся из
 `$PORT`, HTTPS выдаёт Railway.
 
-### Свой домен
+### Домен lotsman.kz
 
-1. Railway → сервис → Settings → Networking → Custom Domain → ввести домен.
-2. У регистратора домена добавить запись, которую покажет Railway (CNAME на `*.up.railway.app`, для
-   корневого домена — CNAME/ALIAS-flattening или A-запись по инструкции Railway).
-3. После выпуска сертификата обновить `og:image` и ссылки на абсолютный адрес домена.
+Домен куплен в ps.kz и добавлен в Railway (`lotsman.kz` и `www.lotsman.kz`). В DNS-зоне домена нужны
+записи:
+
+| Тип   | Имя (хост)             | Значение                                                                  |
+| ----- | ---------------------- | ------------------------------------------------------------------------- |
+| CNAME | `@` (lotsman.kz)       | `u6rqhqtv.up.railway.app`                                                 |
+| TXT   | `_railway-verify`      | `railway-verify=42856135212e9f834d9cb4d5fdbda11e562919d3fafd49e760948d842e3317ea` |
+| CNAME | `www`                  | `z7ab4rp3.up.railway.app`                                                 |
+| TXT   | `_railway-verify.www`  | `railway-verify=795243b5cca335790feb4d1973ba5bcd7165c2ff994c017dfb2197e000ac15cc` |
+
+Railway принимает для корня домена только CNAME с «выравниванием» (CNAME flattening) или ALIAS. Если
+DNS ps.kz не даёт создать CNAME на `@`, домен переводят на бесплатный DNS Cloudflare (у него это
+выравнивание есть) и заводят те же записи там.
+
+Статус домена и сертификата: Railway → проект `lotsman-site` → сервис `web` → Settings → Networking.
 
 ### Подтверждение домена в Meta
 
