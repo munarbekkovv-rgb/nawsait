@@ -12,7 +12,7 @@
 | `404.html`            | Страница «не найдено»                                                    |
 | `assets/styles.css`   | Стили по бренд-гайду (Ночь / Песок / Янтарь), светлая и тёмная тема      |
 | `assets/fonts/`       | Montserrat и Inter, свои файлы — сайт не ходит на сторонние серверы      |
-| `assets/og.png`       | Картинка для превью ссылки в WhatsApp и Telegram                         |
+| `assets/og.jpg`       | Картинка для превью ссылки в WhatsApp и Telegram                         |
 | `Caddyfile`, `Dockerfile` | Веб-сервер Caddy для Railway                                         |
 
 Сайт статический: сборки нет, правки делаются прямо в HTML.
@@ -37,19 +37,24 @@ Railway, проект `lotsman-site`: сервис собирается из `Do
 
 ### Домен lotsman.kz
 
-Домен куплен в ps.kz и добавлен в Railway (`lotsman.kz` и `www.lotsman.kz`). В DNS-зоне домена нужны
-записи:
+Домен куплен в ps.kz, DNS-зона — на серверах ps.kz. В Railway добавлены `lotsman.kz` и `www.lotsman.kz`,
+сертификаты выпущены. `www.lotsman.kz` переадресуется на `https://lotsman.kz` (см. `Caddyfile`).
 
 | Тип   | Имя (хост)             | Значение                                                                  |
 | ----- | ---------------------- | ------------------------------------------------------------------------- |
-| CNAME | `@` (lotsman.kz)       | `u6rqhqtv.up.railway.app`                                                 |
+| A     | `@` (lotsman.kz)       | `69.46.46.91` — IP адреса `u6rqhqtv.up.railway.app`                       |
 | TXT   | `_railway-verify`      | `railway-verify=42856135212e9f834d9cb4d5fdbda11e562919d3fafd49e760948d842e3317ea` |
 | CNAME | `www`                  | `z7ab4rp3.up.railway.app`                                                 |
 | TXT   | `_railway-verify.www`  | `railway-verify=795243b5cca335790feb4d1973ba5bcd7165c2ff994c017dfb2197e000ac15cc` |
 
-Railway принимает для корня домена только CNAME с «выравниванием» (CNAME flattening) или ALIAS. Если
-DNS ps.kz не даёт создать CNAME на `@`, домен переводят на бесплатный DNS Cloudflare (у него это
-выравнивание есть) и заводят те же записи там.
+Корень домена смотрит на Railway через A-запись: DNS ps.kz не даёт CNAME на `@`. Railway официально
+поддерживает для корня только CNAME flattening или ALIAS, поэтому если Railway сменит IP, lotsman.kz
+перестанет открываться (www продолжит работать). Проверка: `u6rqhqtv.up.railway.app` должен
+резолвиться в тот же IP, что и `lotsman.kz`. Надёжное решение — перенести DNS на Cloudflare и поставить
+CNAME `@` → `u6rqhqtv.up.railway.app`.
+
+Запись `mail.lotsman.kz` из шаблона ps.kz тоже указывает на IP сайта, поэтому почта на `@lotsman.kz`
+сейчас не работает. Для доменной почты её нужно настроить отдельно.
 
 Статус домена и сертификата: Railway → проект `lotsman-site` → сервис `web` → Settings → Networking.
 

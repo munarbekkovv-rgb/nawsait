@@ -447,7 +447,7 @@ ul {
   left: 0;
   bottom: 0;
   width: max(1200px, 100%);
-  opacity: 0.75;
+  opacity: 0.55;
 }
 .hero .wrap {
   position: relative;
