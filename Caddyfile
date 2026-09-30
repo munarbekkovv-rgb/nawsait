@@ -1,0 +1,27 @@
+# Статический сайт Lotsman Analytics. Railway передаёт порт в $PORT, HTTPS делает Railway.
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+		-Server
+	}
+	@assets path /assets/* /favicon.svg
+	header @assets Cache-Control "public, max-age=604800"
+
+	try_files {path} {path}/index.html {path}.html
+	file_server
+
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}
