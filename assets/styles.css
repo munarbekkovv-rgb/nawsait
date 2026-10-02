@@ -801,13 +801,12 @@ ul {
   white-space: nowrap;
 }
 .price-tag small {
-  display: block;
-  margin-top: 6px;
+  display: inline;
+  margin-left: 8px;
   font-family: var(--text);
   font-size: 13px;
   font-weight: 500;
   color: var(--muted);
-  text-align: right;
 }
 .checks {
   list-style: none;
