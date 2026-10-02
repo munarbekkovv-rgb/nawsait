@@ -21,8 +21,20 @@
 		X-Frame-Options SAMEORIGIN
 		-Server
 	}
-	@assets path /assets/* /favicon.svg /apple-touch-icon.png
-	header @assets Cache-Control "public, max-age=604800"
+	# Страницы браузер перепроверяет при каждом заходе, чтобы правки были видны сразу.
+	# Стили и скрипт подключаются с версией (?v=…), поэтому их можно кэшировать надолго.
+	@pages not path /assets/* /favicon.svg /apple-touch-icon.png
+	header @pages Cache-Control "no-cache"
+	@versioned {
+		path /assets/*
+		query v=*
+	}
+	header @versioned Cache-Control "public, max-age=31536000, immutable"
+	@assets {
+		path /assets/* /favicon.svg /apple-touch-icon.png
+		not query v=*
+	}
+	header @assets Cache-Control "public, max-age=86400"
 
 	try_files {path} {path}/index.html {path}.html
 	file_server
