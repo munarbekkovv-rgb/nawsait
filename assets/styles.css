@@ -411,16 +411,21 @@ ul {
   width: 100%;
   margin-top: 16px;
 }
-@media (min-width: 1000px) {
-  .nav {
-    display: flex;
-    gap: 26px;
-  }
+.header .wrap > .brand {
+  margin-right: auto;
+}
+@media (min-width: 640px) {
   .header-cta {
     display: inline-flex;
     min-height: 42px;
     padding: 9px 18px;
     font-size: 15px;
+  }
+}
+@media (min-width: 1120px) {
+  .nav {
+    display: flex;
+    gap: 24px;
   }
   .menu-btn,
   .mobile-nav,
@@ -791,7 +796,7 @@ ul {
 .price-tag {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 26px;
+  font-size: 20px;
   line-height: 1;
   white-space: nowrap;
 }
@@ -1022,23 +1027,21 @@ ul {
   font-size: 15px;
   margin-top: 4px;
 }
-.plan .price {
+.plan .term {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--soft);
   font-family: var(--display);
   font-weight: 700;
-  font-size: 34px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: 19px;
+  line-height: 1.2;
 }
-.plan .price small {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-.plan .terms {
-  font-size: 14px;
+.plan .term svg {
   color: var(--muted);
-  margin-top: 6px;
-  line-height: 1.45;
 }
 .plan .checks {
   flex: 1;
@@ -1061,12 +1064,17 @@ ul {
   box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
-.plan.featured h3,
-.plan.featured .price {
+.plan.featured h3 {
   color: var(--on-dark);
 }
+.plan.featured .term {
+  background: rgba(245, 241, 232, 0.08);
+  color: var(--on-dark);
+}
+.plan.featured .term svg {
+  color: var(--amber);
+}
 .plan.featured .sub,
-.plan.featured .terms,
 .plan.featured .limits {
   color: var(--on-dark-2);
 }
@@ -1149,27 +1157,6 @@ ul {
   color: var(--muted);
 }
 
-/* Ниши */
-.niches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  list-style: none;
-}
-.niches li {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  font-weight: 600;
-  font-size: 15.5px;
-}
-.niches li svg {
-  color: var(--muted);
-}
 
 /* Принципы */
 .principles .card {
@@ -1292,7 +1279,7 @@ ul {
 .footer {
   background: var(--deep);
   color: var(--on-dark-2);
-  padding: 48px 0 96px;
+  padding: 48px 0 28px;
   font-size: 14.5px;
   line-height: 1.55;
 }
@@ -1302,11 +1289,6 @@ ul {
 .footer-grid {
   display: grid;
   gap: 32px;
-}
-@media (min-width: 1000px) {
-  .footer {
-    padding-bottom: 28px;
-  }
 }
 @media (min-width: 760px) {
   .footer-grid {
@@ -1362,32 +1344,6 @@ ul {
   }
   .req dd {
     margin-bottom: 8px;
-  }
-}
-
-/* ---------- Плавающая кнопка WhatsApp (телефон) ---------- */
-.wa-float {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 50;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--amber);
-  color: var(--deep);
-  box-shadow: 0 8px 24px rgba(7, 28, 51, 0.35);
-  text-decoration: none;
-}
-.wa-float:hover {
-  background: var(--amber-hover);
-}
-/* На широком экране кнопка WhatsApp всегда видна в шапке. */
-@media (min-width: 1000px) {
-  .wa-float {
-    display: none;
   }
 }
 
@@ -1465,4 +1421,657 @@ ul {
 }
 .back:hover {
   color: var(--ink);
+}
+
+/* ==========================================================================
+   Продающие блоки и анимации (версия 2).
+   Всё движение — только opacity и transform; при «уменьшить движение» в системе
+   анимации отключаются, а блоки сразу видны.
+   ========================================================================== */
+
+/* ---------- Шапка при прокрутке, «живой» знак маяка ---------- */
+.header {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.header.scrolled {
+  background: rgba(7, 28, 51, 0.97);
+  box-shadow: 0 8px 30px rgba(7, 28, 51, 0.28);
+}
+.brand svg polygon {
+  animation: lamp 3.6s ease-in-out infinite;
+}
+@keyframes lamp {
+  0%,
+  100% {
+    fill-opacity: 0.25;
+  }
+  50% {
+    fill-opacity: 0.75;
+  }
+}
+
+/* ---------- Первый экран: появление по очереди ---------- */
+.enter {
+  animation: enterUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(0.08s + var(--d, 0) * 0.11s);
+}
+.enter-card {
+  animation: enterCard 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+@keyframes enterUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes enterCard {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Луч маяка медленно ходит из стороны в сторону. */
+.hero > .ray {
+  transform-origin: 0% 100%;
+  animation: sweep 9s ease-in-out infinite alternate;
+}
+@keyframes sweep {
+  from {
+    transform: rotate(-5deg);
+    opacity: 0.4;
+  }
+  to {
+    transform: rotate(3deg);
+    opacity: 0.65;
+  }
+}
+.hero h1 em {
+  background: linear-gradient(transparent 88%, rgba(242, 163, 58, 0.35) 88%) no-repeat;
+  background-size: 0% 100%;
+  animation: underline 1s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
+}
+@keyframes underline {
+  to {
+    background-size: 100% 100%;
+  }
+}
+.trust {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 18px 0 0;
+  padding: 0;
+  font-size: 14px;
+  color: var(--on-dark-2);
+}
+.trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.trust svg {
+  color: #7fd3b4;
+}
+
+/* Отчёт на первом экране «заполняется» строка за строкой. */
+.report-progress {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--soft);
+  overflow: hidden;
+  margin: -2px 0 6px;
+}
+.report-progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--course), #6cc4a4);
+  transform-origin: left;
+  animation: progress 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.9s both;
+}
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.report-list li {
+  animation: rowIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.report-list li .pill {
+  animation: pillIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.report-list li:nth-child(1),
+.report-list li:nth-child(1) .pill {
+  animation-delay: 1s;
+}
+.report-list li:nth-child(2),
+.report-list li:nth-child(2) .pill {
+  animation-delay: 1.4s;
+}
+.report-list li:nth-child(3),
+.report-list li:nth-child(3) .pill {
+  animation-delay: 1.8s;
+}
+.report-list li:nth-child(4),
+.report-list li:nth-child(4) .pill {
+  animation-delay: 2.2s;
+}
+.report-list li:nth-child(5),
+.report-list li:nth-child(5) .pill {
+  animation-delay: 2.6s;
+}
+.report-list li:nth-child(6),
+.report-list li:nth-child(6) .pill {
+  animation-delay: 3s;
+}
+.report-sum {
+  animation: enterUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 3.5s both;
+}
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pillIn {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Кнопки: блик на главных действиях ---------- */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-130%);
+  animation: shine 5s ease-in-out 2.5s infinite;
+}
+@keyframes shine {
+  0%,
+  72% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+.btn-primary {
+  box-shadow: 0 6px 18px rgba(242, 163, 58, 0.28);
+  transition: background-color 0.15s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(242, 163, 58, 0.38);
+  }
+}
+
+/* ---------- Появление блоков при прокрутке ---------- */
+.js [data-reveal] {
+  opacity: 0;
+  translate: 0 30px;
+  transition-property: opacity, translate, scale, transform, box-shadow, border-color;
+  transition-duration: 0.8s, 0.8s, 0.8s, 0.3s, 0.3s, 0.3s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 0.1s), calc(var(--i, 0) * 0.1s), calc(var(--i, 0) * 0.1s), 0s, 0s, 0s;
+}
+.js [data-reveal="zoom"] {
+  translate: 0 20px;
+  scale: 0.96;
+}
+.js [data-reveal].in {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+}
+.js [data-reveal] .icon {
+  scale: 0.5;
+  transition: scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--i, 0) * 0.1s + 0.25s);
+}
+.js [data-reveal].in .icon {
+  scale: 1;
+}
+@media (hover: hover) {
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 2px 4px rgba(7, 28, 51, 0.06), 0 18px 40px rgba(7, 28, 51, 0.12);
+    border-color: var(--line-strong);
+  }
+}
+
+/* ---------- Проблема → решение ---------- */
+.pain-card {
+  display: flex;
+  flex-direction: column;
+}
+.pain-card > p:not(.fix) {
+  flex: 1;
+}
+.pain-card .fix {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line-strong);
+  color: var(--ok-ink);
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.pain-card .fix svg {
+  flex: none;
+  margin-top: 2px;
+}
+.js .pain-card .fix {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: calc(var(--i, 0) * 0.1s + 0.55s);
+}
+.js .pain-card.in .fix {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Калькулятор потерь ---------- */
+.calc {
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .calc {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 20px;
+  }
+}
+.calc-inputs {
+  display: grid;
+  gap: 22px;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+@media (min-width: 900px) {
+  .calc-inputs {
+    padding: 32px;
+    gap: 26px;
+  }
+}
+.field {
+  display: grid;
+  gap: 10px;
+}
+.field-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-weight: 600;
+}
+.field-top output {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.field-hint {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: -4px;
+}
+.field input[type="range"] {
+  --p: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.field input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--night) var(--p), var(--soft) var(--p));
+}
+.field input[type="range"]::-moz-range-track {
+  height: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--night) var(--p), var(--soft) var(--p));
+}
+.field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 4px solid var(--surface);
+  box-shadow: 0 2px 10px rgba(7, 28, 51, 0.3);
+  transition: transform 0.15s ease;
+}
+.field input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 4px solid var(--surface);
+  box-shadow: 0 2px 10px rgba(7, 28, 51, 0.3);
+}
+.field input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+.field input[type="range"]:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+:root[data-theme="dark"] .field input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, var(--sand) var(--p), var(--line) var(--p));
+}
+:root[data-theme="dark"] .field input[type="range"]::-moz-range-track {
+  background: linear-gradient(90deg, var(--sand) var(--p), var(--line) var(--p));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .field input[type="range"]::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg, var(--sand) var(--p), var(--line) var(--p));
+  }
+  :root:not([data-theme="light"]) .field input[type="range"]::-moz-range-track {
+    background: linear-gradient(90deg, var(--sand) var(--p), var(--line) var(--p));
+  }
+}
+.calc-result {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(120% 120% at 100% 0%, #123a63 0%, var(--night) 55%, var(--deep) 100%);
+  color: var(--on-dark);
+  box-shadow: var(--shadow-lg);
+}
+.calc-result > *:not(.ray) {
+  position: relative;
+}
+.calc-result .ray {
+  right: -70px;
+  top: -50px;
+  width: 360px;
+  opacity: 0.5;
+}
+.calc-label {
+  color: var(--on-dark-2);
+  font-size: 15px;
+}
+.calc-sum {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(34px, 8vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  margin: 2px 0;
+}
+.calc-meta {
+  margin: 12px 0 20px;
+  color: var(--on-dark-2);
+  font-size: 15px;
+}
+.calc-meta b {
+  color: var(--on-dark);
+  white-space: nowrap;
+}
+.calc-result .btn {
+  width: 100%;
+}
+.calc-note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: #93a4b8;
+  line-height: 1.45;
+}
+@media (min-width: 900px) {
+  .calc-result {
+    padding: 36px 32px;
+  }
+}
+
+/* ---------- Результат проверки: луч и ровные слои ---------- */
+.result .ray {
+  right: -60px;
+  top: -50px;
+  width: 420px;
+  opacity: 0.45;
+}
+.result > *:not(.ray) {
+  position: relative;
+}
+
+/* ---------- Бегущая строка ниш ---------- */
+.niches-block {
+  margin-top: 44px;
+}
+.niches-block h3 {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  padding: 4px 0;
+}
+.marquee-track {
+  list-style: none;
+  display: flex;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  animation: marquee 34s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-track li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-weight: 600;
+  font-size: 15.5px;
+  white-space: nowrap;
+}
+.marquee-track li svg {
+  color: var(--muted);
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Шаги: линия «прорисовывается» ---------- */
+.js .step::after {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+.js .step.in::after {
+  transform: scaleY(1);
+}
+.js .step::before {
+  transform: scale(0.4);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s, opacity 0.3s ease 0.1s;
+}
+.js .step.in::before {
+  transform: none;
+  opacity: 1;
+}
+
+/* ---------- Пакет «Лоцман 7»: мягкое свечение ---------- */
+.plan.featured {
+  animation: glow 4s ease-in-out infinite;
+}
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 12px 40px rgba(7, 28, 51, 0.22), 0 0 0 1px rgba(242, 163, 58, 0.18);
+  }
+  50% {
+    box-shadow: 0 16px 50px rgba(7, 28, 51, 0.28), 0 0 0 1px rgba(242, 163, 58, 0.5),
+      0 0 34px rgba(242, 163, 58, 0.16);
+  }
+}
+
+/* ---------- Вопросы: плавное раскрытие ---------- */
+.faq details {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.faq details[open] {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow);
+}
+.faq details[open] > p {
+  animation: faqIn 0.35s ease both;
+}
+@keyframes faqIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Нижняя кнопка на телефоне ---------- */
+.mcta {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(7, 28, 51, 0.94);
+  border: 1px solid rgba(245, 241, 232, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 34px rgba(7, 28, 51, 0.4);
+  transform: translateY(140%);
+  visibility: hidden;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.45s;
+}
+.mcta.show {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+}
+.mcta .btn {
+  flex: 1;
+  min-height: 46px;
+  box-shadow: none;
+}
+.mcta-call {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--on-dark-line);
+  color: var(--on-dark);
+}
+@media (min-width: 1000px) {
+  .mcta {
+    display: none;
+  }
+}
+
+/* ---------- Уменьшить движение ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+  }
+  .hero > .ray,
+  .plan.featured,
+  .brand svg polygon,
+  .btn-shine::after {
+    animation: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: auto;
+    row-gap: 10px;
+  }
+  .marquee-track li[aria-hidden="true"] {
+    display: none;
+  }
+  .marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }
