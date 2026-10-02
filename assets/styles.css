@@ -1307,19 +1307,17 @@ ul {
 .footer .brand {
   margin-bottom: 14px;
 }
-.req {
+.req-lines {
+  list-style: none;
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  gap: 6px 14px;
+  gap: 10px;
   margin: 0;
-}
-.req dt {
-  color: #8fa0b3;
-}
-.req dd {
-  margin: 0;
+  padding: 0;
   color: var(--on-dark);
   overflow-wrap: anywhere;
+}
+.req-lines span {
+  color: #8fa0b3;
 }
 .footer-links {
   list-style: none;
@@ -1335,15 +1333,6 @@ ul {
   padding-top: 20px;
   border-top: 1px solid var(--on-dark-line);
   font-size: 13.5px;
-}
-@media (max-width: 420px) {
-  .req {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-  .req dd {
-    margin-bottom: 8px;
-  }
 }
 
 /* ---------- Текстовые страницы (политика) ---------- */
