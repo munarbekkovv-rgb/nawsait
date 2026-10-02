@@ -95,6 +95,26 @@
       { rootMargin: "0px 0px -8% 0px", threshold: 0.12 }
     );
     for (var j = 0; j < els.length; j++) io.observe(els[j]);
+    // Страховка для встроенных браузеров (Instagram, WhatsApp): всё, что уже на экране,
+    // показываем, даже если наблюдатель не сработал.
+    function sweep() {
+      var h = window.innerHeight;
+      for (var n = 0; n < els.length; n++) {
+        if (els[n].classList.contains("in")) continue;
+        var r = els[n].getBoundingClientRect();
+        if (r.top < h && r.bottom > 0) els[n].classList.add("in");
+      }
+    }
+    setTimeout(sweep, 1500);
+    var t = null;
+    window.addEventListener(
+      "scroll",
+      function () {
+        clearTimeout(t);
+        t = setTimeout(sweep, 400);
+      },
+      { passive: true }
+    );
   }
 
   // Числа на первом экране считаются от нуля, когда видны.
