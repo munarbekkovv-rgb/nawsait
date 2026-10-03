@@ -5,7 +5,7 @@
   var root = document.documentElement;
   root.classList.add("js");
 
-  var PHONE = "77064501518";
+  var PHONE = "77007759815";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var hasIO = "IntersectionObserver" in window;
 
