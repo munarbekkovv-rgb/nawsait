@@ -1307,17 +1307,22 @@ ul {
 .footer .brand {
   margin-bottom: 14px;
 }
-.req-lines {
-  list-style: none;
-  display: grid;
-  gap: 10px;
+/* Реквизиты в подвале — подписи и порядок как в бизнес-портфолио Meta. */
+.req-meta {
   margin: 0;
-  padding: 0;
-  color: var(--on-dark);
   overflow-wrap: anywhere;
 }
-.req-lines span {
+.req-meta dt {
   color: #8fa0b3;
+  font-size: 13px;
+  font-weight: 600;
+}
+.req-meta dd {
+  margin: 2px 0 12px;
+  color: var(--on-dark);
+}
+.req-meta dd:last-child {
+  margin-bottom: 0;
 }
 .footer-links {
   list-style: none;
